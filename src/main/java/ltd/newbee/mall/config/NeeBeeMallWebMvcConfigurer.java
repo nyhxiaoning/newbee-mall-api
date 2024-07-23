@@ -37,14 +37,25 @@ public class NeeBeeMallWebMvcConfigurer extends WebMvcConfigurationSupport {
         argumentResolvers.add(tokenToAdminUserMethodArgumentResolver);
     }
 
+    /**
+     * 5. 添加资源处理器
+     * /upload/** 和 /goods-img/**：映射到文件系统中的资源目录，使用Constants.FILE_UPLOAD_DIC来指定文件上传目录。
+     * /swagger-ui/**：映射到classpath:/META-INF/resources/webjars/springfox-swagger-ui/，用于Swagger UI。
+     * @param registry
+     */
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //  添加文件上传目录的资源处理
         registry.addResourceHandler("/upload/**").addResourceLocations("file:" + Constants.FILE_UPLOAD_DIC);
         registry.addResourceHandler("/goods-img/**").addResourceLocations("file:" + Constants.FILE_UPLOAD_DIC);
-
+        //  添加Swagger UI的资源处理
         registry.
                 addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
                 .resourceChain(false);
+
+        // 添加静态资源目录的资源处理
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/public/**").addResourceLocations("classpath:/public/");
     }
 
     /**
