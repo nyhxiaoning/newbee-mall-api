@@ -44,12 +44,13 @@ public class NewBeeAdminUploadAPI {
     private StandardServletMultipartResolver standardServletMultipartResolver;
 
     /**
-     * 图片上传
+     * 图片上传：单个图
      */
     @RequestMapping(value = "/upload/file", method = RequestMethod.POST)
     @ApiOperation(value = "单图上传", notes = "file Name \"file\"")
-    public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file, @TokenToAdminUser AdminUserToken adminUser) throws URISyntaxException {
-        logger.info("adminUser:{}", adminUser.toString());
+//    public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file, @TokenToAdminUser AdminUserToken adminUser) throws URISyntaxException {
+      public Result upload(HttpServletRequest httpServletRequest, @RequestParam("file") MultipartFile file) throws URISyntaxException {
+//        logger.info("adminUser:{}", adminUser.toString());
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         //生成文件名称通用方法
