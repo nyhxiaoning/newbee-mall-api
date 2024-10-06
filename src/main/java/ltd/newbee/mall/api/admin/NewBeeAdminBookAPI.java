@@ -34,10 +34,10 @@ public class NewBeeAdminBookAPI {
      */
     @PostMapping("/create")
     public Result createBook(@RequestBody @Valid Book book) {
-        // TODO:这里默认生成了当前的api的请求体结构内容：
+        // TODO:这里默认生成了当前的api的请求体结构内容：RequestBody
         logger.info("访问admin后台接口：创建图书");
         String result = bookService.createBook(book);
-        if (result.equals("SUCCESS")) {
+        if (result.equals("SUCCESS") || result.equals("success")) {
             return ResultGenerator.genSuccessResult("图书创建成功");
         }
         return ResultGenerator.genFailResult(result);
@@ -50,7 +50,7 @@ public class NewBeeAdminBookAPI {
     public Result deleteBook(@PathVariable Long id) {
         logger.info("访问admin后台接口：删除图书");
         String result = bookService.deleteBook(id);
-        if (result.equals("SUCCESS")) {
+        if (result.equals("SUCCESS")|| result.equals("success")) {
             return ResultGenerator.genSuccessResult("图书删除成功");
         }
         return ResultGenerator.genFailResult(result);
@@ -63,7 +63,7 @@ public class NewBeeAdminBookAPI {
     public Result updateBook(@RequestBody @Valid Book book) {
         logger.info("访问admin后台接口：更新图书信息");
         String result = bookService.updateBook(book);
-        if (result.equals("SUCCESS")) {
+        if (result.equals("SUCCESS")|| result.equals("success")) {
             return ResultGenerator.genSuccessResult("图书更新成功");
         }
         return ResultGenerator.genFailResult(result);
