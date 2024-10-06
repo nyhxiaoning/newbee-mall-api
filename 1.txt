@@ -1,0 +1,91 @@
+.
+├── 1.txt
+├── LICENSE
+├── README.md
+├── pom.xml
+├── src
+│   └── main
+│       ├── java
+│       │   └── ltd
+│       │       └── newbee
+│       └── resources
+│           ├── application.properties
+│           ├── file-test
+│           │   ├── logo.png
+│           │   ├── main.css
+│           │   ├── test.html
+│           │   └── test.js
+│           ├── mapper
+│           │   ├── AdminUserMapper.xml
+│           │   ├── CarouselMapper.xml
+│           │   ├── GoodsCategoryMapper.xml
+│           │   ├── IndexConfigMapper.xml
+│           │   ├── MallUserAddressMapper.xml
+│           │   ├── MallUserMapper.xml
+│           │   ├── NewBeeAdminUserTokenMapper.xml
+│           │   ├── NewBeeMallGoodsMapper.xml
+│           │   ├── NewBeeMallOrderAddressMapper.xml
+│           │   ├── NewBeeMallOrderItemMapper.xml
+│           │   ├── NewBeeMallOrderMapper.xml
+│           │   ├── NewBeeMallShoppingCartItemMapper.xml
+│           │   └── NewBeeMallUserTokenMapper.xml
+│           ├── newbee_mall_db_v2_schema.sql
+│           ├── public
+│           │   ├── newbee-mall.png
+│           │   └── newbee_mall_db_v2_schema.sql
+│           ├── static
+│           │   ├── index.html
+│           │   ├── newbee-mall.png
+│           │   └── some-page.html
+│           └── upload.zip
+├── static-files
+│   ├── newbee-mall-api-swagger.png
+│   ├── newbee-mall.png
+│   ├── 商品搜索.png
+│   ├── 地址管理.png
+│   ├── 生成订单.png
+│   ├── 登录.png
+│   ├── 订单列表.png
+│   ├── 订单详情.png
+│   ├── 详情页.png
+│   ├── 购物车.png
+│   └── 首页.png
+└── target
+    ├── classes
+    │   ├── application.properties
+    │   ├── file-test
+    │   │   ├── logo.png
+    │   │   ├── main.css
+    │   │   ├── test.html
+    │   │   └── test.js
+    │   ├── ltd
+    │   │   └── newbee
+    │   │       └── mall
+    │   ├── mapper
+    │   │   ├── AdminUserMapper.xml
+    │   │   ├── CarouselMapper.xml
+    │   │   ├── GoodsCategoryMapper.xml
+    │   │   ├── IndexConfigMapper.xml
+    │   │   ├── MallUserAddressMapper.xml
+    │   │   ├── MallUserMapper.xml
+    │   │   ├── NewBeeAdminUserTokenMapper.xml
+    │   │   ├── NewBeeMallGoodsMapper.xml
+    │   │   ├── NewBeeMallOrderAddressMapper.xml
+    │   │   ├── NewBeeMallOrderItemMapper.xml
+    │   │   ├── NewBeeMallOrderMapper.xml
+    │   │   ├── NewBeeMallShoppingCartItemMapper.xml
+    │   │   └── NewBeeMallUserTokenMapper.xml
+    │   ├── newbee_mall_db_v2_schema.sql
+    │   ├── public
+    │   │   ├── newbee-mall.png
+    │   │   └── newbee_mall_db_v2_schema.sql
+    │   ├── static
+    │   │   ├── index.html
+    │   │   ├── newbee-mall.png
+    │   │   └── some-page.html
+    │   ├── tlog-agent.jar
+    │   └── upload.zip
+    └── generated-sources
+        └── annotations
+
+23 directories, 66 files

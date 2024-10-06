@@ -1,10 +1,275 @@
 
-## 记录开发流程
+## 1.记录开发流程
 ### 尝试接入一个中间件：2024年10月05日
 （1）加入一个Tlog
 
 
 ### 尝试增加一个随机每日发布广告管理menu菜单模块：2024年10月05日
+
+## 2.增加一个Book模块内容
+如下内容：Result内容：Book模块，xml创建，sql，定义类，实现类，引用类。
+
+要在这个项目结构中增加一个名为 **`book`** 的模块，需要在以下几个地方进行修改和添加：
+
+### 1. **API 模块**
+在 `api` 目录下分别添加 `admin` 和 `mall` 对应的 `book` 模块 API。
+
+**目录结构**：
+```
+├── api
+│   ├── admin
+│   │   ├── NewBeeAdminBookAPI.java
+│   └── mall
+│       ├── NewBeeMallBookAPI.java
+```
+
+**`NewBeeAdminBookAPI.java` 示例**：
+```java
+package ltd.newbee.mall.api.admin;
+
+import ltd.newbee.mall.service.NewBeeMallBookService;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/admin/book")
+public class NewBeeAdminBookAPI {
+
+    private final NewBeeMallBookService bookService;
+
+    public NewBeeAdminBookAPI(NewBeeMallBookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping("/list")
+    public Result list() {
+        return ResultGenerator.genSuccessResult(bookService.getBooks());
+    }
+
+    // 其他管理书籍相关的 API
+}
+```
+
+**`NewBeeMallBookAPI.java` 示例**：
+```java
+package ltd.newbee.mall.api.mall;
+
+import ltd.newbee.mall.service.NewBeeMallBookService;
+import org.springframework.web.bind.annotation.*;
+/**
+ * 引入Result类，统一处理当前的返回值
+ */
+import ltd.newbee.mall.util.*;
+
+@RestController
+@RequestMapping("/mall/book")
+public class NewBeeMallBookAPI {
+
+    private final NewBeeMallBookService bookService;
+
+    public NewBeeMallBookAPI(NewBeeMallBookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping("/list")
+    public Result list() {
+        return ResultGenerator.genSuccessResult(bookService.getBooks());
+    }
+
+    // 其他面向用户的书籍 API
+}
+```
+
+### 2. **DAO 模块**
+在 `dao` 目录下为书籍模块添加 `Mapper` 文件，用于数据库的增删查改。
+
+**目录结构**：
+```
+├── dao
+│   ├── BookMapper.java
+```
+
+**`BookMapper.java` 示例**：
+```java
+package ltd.newbee.mall.dao;
+
+import ltd.newbee.mall.entity.Book;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+@Mapper
+public interface BookMapper {
+    List<Book> selectAllBooks();
+    
+    // 其他数据库操作方法
+}
+```
+
+### 3. **Entity 模块**
+在 `entity` 目录下为书籍模块添加 `Book` 实体类，定义数据库中书籍表的字段。
+
+**目录结构**：
+```
+├── entity
+│   ├── Book.java
+```
+
+**`Book.java` 示例**：
+```java
+package ltd.newbee.mall.entity;
+
+public class Book {
+    private Long id;
+    private String title;
+    private String author;
+    private String description;
+    private Integer stock;
+    private Double price;
+    
+    // getter 和 setter 方法
+}
+```
+
+### 4. **Service 模块**
+在 `service` 目录下添加 `NewBeeMallBookService`，并在 `impl` 目录下实现该接口。
+
+**目录结构**：
+```
+├── service
+│   ├── NewBeeMallBookService.java
+│   └── impl
+│       ├── NewBeeMallBookServiceImpl.java
+```
+
+**`NewBeeMallBookService.java` 示例**：
+```java
+package ltd.newbee.mall.service;
+
+import ltd.newbee.mall.entity.Book;
+
+import java.util.List;
+
+public interface NewBeeMallBookService {
+    List<Book> getBooks();
+    
+    // 其他业务逻辑
+}
+```
+
+**`NewBeeMallBookServiceImpl.java` 示例**：
+```java
+package ltd.newbee.mall.service.impl;
+
+import ltd.newbee.mall.dao.BookMapper;
+import ltd.newbee.mall.entity.Book;
+import ltd.newbee.mall.service.NewBeeMallBookService;
+import org.springframework.stereotype.Service;
+/**
+ * 引入Result类，统一处理当前的返回值
+ */
+import ltd.newbee.mall.util.*;
+import java.util.List;
+
+@Service
+public class NewBeeMallBookServiceImpl implements NewBeeMallBookService {
+
+    private final BookMapper bookMapper;
+
+    public NewBeeMallBookServiceImpl(BookMapper bookMapper) {
+        this.bookMapper = bookMapper;
+    }
+
+    @Override
+    public List<Book> getBooks() {
+        return bookMapper.selectAllBooks();
+    }
+
+    // 其他业务逻辑实现
+}
+```
+
+### 5. **Mapper 文件**
+在 `resources/mapper` 目录下添加 `BookMapper.xml`，对应 `BookMapper.java` 中的 SQL 语句。
+
+**目录结构**：
+```
+├── resources
+│   └── mapper
+│       ├── BookMapper.xml
+```
+
+**`BookMapper.xml` 示例**：
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.newbee.mall.dao.BookMapper">
+
+    <select id="selectAllBooks" resultType="ltd.newbee.mall.entity.Book">
+        SELECT * FROM books
+    </select>
+
+    <!-- 其他 SQL 语句 -->
+
+</mapper>
+```
+
+### 6. **数据库表结构**
+在数据库中添加 `books` 表，并将书籍相关的字段添加到其中。可以将此语句添加到 `newbee_mall_db_v2_schema.sql` 文件中。
+
+```sql
+CREATE TABLE `books` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `author` VARCHAR(255) NOT NULL,
+    `description` TEXT,
+    `stock` INT NOT NULL,
+    `price` DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+```
+
+### 7. **配置文件更新**
+根据需要在 `application.properties` 中添加新的配置，比如与书籍相关的路径或其他设置。
+
+---
+
+这样就完成了 `book` 模块的整体添加，包括 API、DAO、实体、服务、Mapper 文件和数据库结构。
+
+
+## 3。完成：增加一个模块，测试操作（对应步骤2）
+这里增加一下，如果可以跳过全县检查。
+应该是：配置目录表：白名单：
+如果找不到白名单怎么配置，这里增加一个内容写法：
+- 第一步：找到：2.新蜂商城用户操作相关接口
+- 第二步：登录一下：
+账号：15600705234
+密码：e10adc3949ba59abbe56e057f20f883e
+然后获取到返回值的data：
+其实就是token
+6b3837af05f64618815e3abd0391556
+
+- 第三步：
+将这里的配置token值放到接口请求部分
+  这里接口请求部分，可以测试即可。
+  不会检测参数。
+  
+注意：这里增加的是：manage的后台管理接口的测试。
+
+
+
+## 4.内容实现说明
+
+
+### @Resource 
+@Resource 注解用于标识应用程序中的资源。这些资源可以是服务、数据源或其他需要注入的组件。
+
+
+
+
+
+
 
 
 

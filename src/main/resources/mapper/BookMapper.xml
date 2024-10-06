@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.newbee.mall.dao.BookMapper">
+
+    <!-- ResultMap 定义 -->
+    <resultMap id="BaseResultMap" type="ltd.newbee.mall.entity.Book">
+        <id column="book_id" jdbcType="BIGINT" property="bookId" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="author" jdbcType="VARCHAR" property="author" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="stock" jdbcType="INTEGER" property="stock" />
+    </resultMap>
+
+    <!-- 字段列表复用 -->
+    <sql id="Base_Column_List">
+        book_id, title, author, price, stock
+    </sql>
+
+    <!-- 查询所有书籍 -->
+    <select id="selectAllBooks" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM books
+    </select>
+
+    <!-- 插入图书记录 -->
+    <insert id="insertBook" parameterType="ltd.newbee.mall.entity.Book">
+        INSERT INTO books (title, author, price, stock)
+        VALUES (#{title}, #{author}, #{price}, #{stock})
+    </insert>
+
+    <!-- 根据ID删除图书记录 -->
+    <delete id="deleteBookById" parameterType="long">
+        DELETE FROM books WHERE book_id = #{bookId}
+    </delete>
+
+    <!-- 根据ID更新图书信息 -->
+    <update id="updateBookById" parameterType="ltd.newbee.mall.entity.Book">
+        UPDATE books
+        SET title = #{title},
+            author = #{author},
+            price = #{price},
+            stock = #{stock}
+        WHERE book_id = #{bookId}
+    </update>
+
+    <!-- 根据ID查询单个图书 -->
+    <select id="selectBookById" parameterType="long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM books
+        WHERE book_id = #{bookId}
+    </select>
+
+</mapper>
