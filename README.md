@@ -259,11 +259,21 @@ CREATE TABLE `books` (
 
 
 
-## 4.内容实现说明
+## 4.内容实现说明:
 
 
 ### @Resource 
 @Resource 注解用于标识应用程序中的资源。这些资源可以是服务、数据源或其他需要注入的组件。
+
+### 如果配置引入模块，需要token，怎么办？？？
+api部分：
+增加注解：
+import ltd.newbee.mall.config.annotation.TokenToAdminUser;
+import ltd.newbee.mall.entity.AdminUserToken;
+然后给类的定义的参数增加一个：
+@TokenToAdminUser AdminUserToken adminUser
+
+
 
 
 
