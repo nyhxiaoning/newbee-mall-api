@@ -1,7 +1,11 @@
 package ltd.newbee.demo;
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.io.*;
 import java.util.*;
+import java.io.FileReader;
+import java.io.FileWriter;
 
 public class ListSet {
 
@@ -173,6 +177,201 @@ public class ListSet {
         }
         catch (Exception e) {}
     }
+
+    public void ObjectSerializationDemo(){
+        String OBJECT_FILENAME = "data.obj";
+
+        try {
+
+            ObjectOutputStream objectOutputStream =  new ObjectOutputStream(new FileOutputStream(OBJECT_FILENAME));
+            objectOutputStream.writeObject(new Person("张三", 18));
+            objectOutputStream.writeObject(new Person("李四", 19));
+
+            // 读取
+            System.out.println("开始读取");
+            System.out.println(objectOutputStream);
+
+            // 从文件对象中反序列化出对象
+            try {
+                ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(OBJECT_FILENAME));
+                Person person = (Person) objectInputStream.readObject();
+                System.out.println(person);
+                System.out.println("读取完毕");
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }catch (Exception e){
+            System.out.println("异常-ObjectSerializationDemo");
+            e.printStackTrace();
+        }
+    }
+
+
+
+    static class Person implements java.io.Serializable {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        public String toString() {
+            return "Person [name=" + name + ", age=" + age + "]";
+        }
+    }
+
+    public void PipeObjStream(){
+        try {
+            PipedOutputStream pipeos = new PipedOutputStream();
+            PipedInputStream pipeis = new PipedInputStream(pipeos);
+            pipeos.connect(pipeis);// 管道连接
+            byte[] bytes = {11, 21, 3, 40, 5};
+            pipeos.write(bytes);
+
+            // 给管道输出流写入数据
+            pipeos.write(bytes);
+
+            int datas = pipeis.read();
+
+            // 打印写入管道的数据内容
+            while (datas != -1) {
+                System.out.println(datas);
+                datas = pipeis.read();
+
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void StreamReaderWriter(){
+        try {
+            // 从字节流转成字符流
+            InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out);
+
+            // 使用缓冲流提升读写性能
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+            outputStreamWriter.write("请输入内容：");
+            outputStreamWriter.flush();
+
+            // 循环读取用户输入，直到输入"exit"
+            String userInput;
+            while ((userInput = bufferedReader.readLine()) != null) {
+                // 检查是否退出
+                if ("exit".equalsIgnoreCase(userInput)) {
+                    break;
+                }
+
+                // 回显用户输入
+                bufferedWriter.write("你输入的内容是：");
+                bufferedWriter.write(userInput);
+                bufferedWriter.newLine();
+
+                // 计算输入长度并输出
+                bufferedWriter.write("输入长度：" + userInput.length() + " 个字符");
+                bufferedWriter.newLine();
+
+                // 提示继续输入
+                bufferedWriter.write("继续输入（或输入exit结束）：");
+                bufferedWriter.newLine();
+                bufferedWriter.flush(); // 刷新缓冲区
+            }
+
+
+
+            // 输出结束信息
+            bufferedWriter.write("程序已结束。");
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+
+
+
+
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void ReaderWriter(){
+        // FileReader 读取文件
+        // FileWriter 写入文件
+
+
+        try {
+
+                FileReader reader1 = new FileReader("data.txt");
+                FileWriter writer1 = new FileWriter("output.txt");
+
+                  int c1;
+                while ((c1 = reader1.read()) != -1) {
+                    writer1.write(c1);
+                }
+                reader1.close();
+
+                } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    // StringReader和StringWriter
+    public void StringReaderWriter() {
+        try {
+            String str = "Hello World!";
+            StringBuilder builder = new StringBuilder();
+            StringReader reader = new StringReader(str);
+            StringWriter writer = new StringWriter();
+
+            int c1 ;
+            while ((c1 = reader.read()) != -1) {
+                writer.write(c1);
+            }
+            System.out.println(writer.toString());
+            System.out.println(builder.toString());
+            System.out.println(str);
+            System.out.println(str.equals(builder.toString()));
+
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void CharArrayReaderFn() {
+        try{
+            // 这两行是什么意思？？？？
+            char[] charArray = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+            char[] newCharArray = new char[charArray.length];
+
+            CharArrayReader reader = new CharArrayReader(charArray);
+            CharArrayWriter writer = new CharArrayWriter();
+            int i;
+            while ((i = reader.read()) != -1) {
+                writer.write(i);
+            }
+            newCharArray = writer.toCharArray();
+            System.out.println(newCharArray);
+            System.out.println(new String(newCharArray));
+
+        }catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
     public static void main(String[] str) {
         System.out.println("List和Set学习");
 
@@ -181,12 +380,32 @@ public class ListSet {
         listSet.DQueue();
 
         // 文件读写操作：字节流
-        listSet.FileCopy();
+//        listSet.FileCopy();
 
         // 字符数组中读取字节流
         listSet.StreamContent();
 
         // DataOutputStream和DataInputStream
         listSet.DataStreamDemo();
+
+        // 对象序列化
+//        listSet.ObjectSerializationDemo();
+
+        // 管道数据处理
+//        listSet.PipeObjStream();
+
+        // 字符流
+//        listSet.StreamReaderWriter();
+
+        // 读写文件流
+//        listSet.ReaderWriter();
+
+        // StringReader：从字符串中读取数据。然后读取后，这里向字符串中写入数据
+        listSet.StringReaderWriter();
+
+        // CharArrayReaderFn
+        listSet.CharArrayReaderFn();
+
+
     }
 }
