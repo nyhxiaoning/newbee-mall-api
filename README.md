@@ -1,4 +1,14 @@
 # 使用指南
+## PC后台管理系统账号
+- admin 
+- newbee-admin1
+
+密码忘了，还是新注册
+
+## springBoot增加任何主机访问接口
+Spring Boot 项目：
+找到项目中位于src/main/resources目录下的application.properties或application.yml文件。如果是application.properties，添加配置server.address=0.0.0.0；如果是application.yml，添加配置server: address: 0.0.0.0。配置完成后，重启 Spring Boot 应用，此时应用将绑定到所有网络接口，任何 IP 地址都可以访问该服务。
+
 ## 项目启动
 （1）maven插件添加
 配置项目内容，如果发现Maven插件找不到 ，到pom.xml,右键添加maven
@@ -9,6 +19,8 @@
   
 （2）如果想要增加一个文件进行本地测试
 - 增加调试入口
+
+
 
 ## 记录开发流程
 ### 尝试接入一个中间件：2024年10月05日
