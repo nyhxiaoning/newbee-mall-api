@@ -489,7 +489,6 @@ public class ListSet {
         listSet.ArrValue();
         System.out.println("List");
 
-<<<<<<< HEAD
         System.out.println("List和Set学习");
 
         // 对象实例化
@@ -504,7 +503,6 @@ public class ListSet {
 
         // DataOutputStream和DataInputStream
         listSet.DataStreamDemo();
-=======
         // list的功能使用
         listSet.ListValue();
 
@@ -515,7 +513,6 @@ public class ListSet {
         listSet.HashMapFn();
         System.out.println("hashMap");
 
->>>>>>> fa738b2 (feat: 提交本地的内容)
     }
 
 }
