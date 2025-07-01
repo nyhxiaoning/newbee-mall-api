@@ -56,6 +56,22 @@ public class IODemo {
         IODemo ioobj = new IODemo();
 
 
+        System.out.println(IODemo.class);
+        System.out.println(IODemo.class.getClass());
+        System.out.println(IODemo.class.getModifiers());
+        System.out.println(IODemo.class.getPackage());
+        System.out.println(IODemo.class.getSuperclass());
+        System.out.println(IODemo.class.getInterfaces());
+        System.out.println(IODemo.class.getConstructors());
+        System.out.println(IODemo.class.getMethods());
+        System.out.println(IODemo.class.getFields());
+        System.out.println(IODemo.class.getDeclaredConstructors());
+        System.out.println(IODemo.class.getDeclaredMethods());
+        System.out.println(IODemo.class.getName());
+        System.out.println(IODemo.class.getPackage());
+
+
+
         // 单独线程启动当前的服务：
         // 启动服务端线程
         new Thread(() -> ioobj.BioServer()).start();
