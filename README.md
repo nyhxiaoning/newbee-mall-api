@@ -4,6 +4,7 @@
 - admin 
 - newbee-admin1
 
+<<<<<<< HEAD
 密码忘了，还是新注册
 
 ## springBoot增加任何主机访问接口
@@ -12,6 +13,22 @@ Spring Boot 项目：
 =======
 
 >>>>>>> b6bc97d (feat: 配置当前的学习数据结构内容)
+=======
+## 项目常见插件安装
+- Grep Console
+- Chinese
+- 实质原因：System.out.println 本身没有做类型区分打印
+如果打印需要的内容
+这样的函数println默认都会将所有的内容自动转换输出字符串内容；
+  
+### 如果需要打印不同类型，debug的时候查看
+（1）方法1:
+System.out.printf("姓名是：%s，年龄是：%d\n", "Tom", 18);
+（2）方法2: 启动debug的脚本模式
+使用 IDEA 的断点调试功能查看变量类型和值
+
+
+>>>>>>> fa738b2 (feat: 提交本地的内容)
 
 ## 项目启动
 （1）maven插件添加

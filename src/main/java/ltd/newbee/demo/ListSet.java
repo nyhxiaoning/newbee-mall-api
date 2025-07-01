@@ -318,6 +318,10 @@ public class ListSet {
         System.out.println(hashMap.get("2"));
         System.out.println(hashMap.get("3"));
 
+        System.out.println("keySet、values，entrySet");
+        System.out.println(hashMap.keySet());
+        System.out.println(hashMap.values());
+        System.out.println(hashMap.entrySet());
         System.out.println(hashMap.get("4"));
         // 遍历hash表
 //        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
@@ -405,14 +409,14 @@ public class ListSet {
     // List学习记录
     public void ListValue() {
         // list
-        List<String> list = new ArrayList<>();
+        List list = new ArrayList<>();
         list.add("1");
         list.add("2");
+        list.add(11111);
+        list.add(true);
         System.out.println(list);
 
-        for (String str : list) {
-            System.out.println(str);
-        }
+
 
         for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i));
@@ -422,12 +426,62 @@ public class ListSet {
         List list2 = new ArrayList();
         list2.add("1");
         list2.add(22);
+        list2.add(true);
+        list2.add(new Date());
+        list2.add("abccc");
 
-        System.out.println(list2);
+//        System.out.println(list2);// 必须是类型相同
+        // 转换可能会报错：TODO:todo:为什么》》》
+        System.out.println(list2.toArray());
 //        for (Object obj : list2) {
 //            System.out.println(obj);
 //        }
     }
+
+
+    public  void SetValue() {
+        Set set = new HashSet();
+        try {
+            set.add("1");
+            set.add("2");
+            set.add("2");
+            System.out.println("setValue");
+            System.out.println(set.contains("1"));
+            System.out.println(set.size());
+            System.out.println(set.hashCode());
+            System.out.println(set.hashCode());
+            System.out.println(set);
+            System.out.println("遍历set");
+            Iterator iterator = set.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        TreeSet set2 = new TreeSet();
+        set2.add("1");
+        set2.add("2");
+        set2.add("4");
+        set2.add("41");
+        set2.add("422");
+        System.out.println(set2);
+        System.out.println((set2.first()));
+        System.out.println((set2.last()));
+        System.out.println((set2.headSet("2")));
+        System.out.println((set2.tailSet("2")));
+        System.out.println((set2.subSet("2", "4")));
+        System.out.println((set2.comparator()));
+        System.out.println((set2.size()));
+        System.out.println((set2.isEmpty()));
+
+
+
+    }
+
+
+
     public static void main(String[] str) {
 
         System.out.println("数组");
@@ -435,6 +489,7 @@ public class ListSet {
         listSet.ArrValue();
         System.out.println("List");
 
+<<<<<<< HEAD
         System.out.println("List和Set学习");
 
         // 对象实例化
@@ -449,6 +504,18 @@ public class ListSet {
 
         // DataOutputStream和DataInputStream
         listSet.DataStreamDemo();
+=======
+        // list的功能使用
+        listSet.ListValue();
+
+        // set的功能使用
+        listSet.SetValue();
+
+        // hash的功能使用
+        listSet.HashMapFn();
+        System.out.println("hashMap");
+
+>>>>>>> fa738b2 (feat: 提交本地的内容)
     }
 
 }
