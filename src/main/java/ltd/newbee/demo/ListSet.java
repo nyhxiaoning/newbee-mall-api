@@ -1,5 +1,6 @@
 package ltd.newbee.demo;
 
+
 import java.io.*;
 import java.util.*;
 
@@ -173,11 +174,269 @@ public class ListSet {
         }
         catch (Exception e) {}
     }
+
+
+    public void ArrValue() {
+        int[] arr = new int[10];
+        String[] str = new String[10];
+        arr[0] = 1;
+        str[0] = "112";
+        System.out.println(arr[0]);
+        System.out.println(str[0]);
+        System.out.println("数组和字符串");
+
+        System.out.println("数组可以使用对象？？？？");
+        String[][] students = {
+                {"张三", "18", "男"},
+                {"李四", "20", "女"},
+                {"王五", "19", "男"},
+                {"赵六", "17", "女"},
+                {"赵七", "22", "男"}
+        };
+        for (int i = 0; i < students.length; i++) {
+            System.out.println("姓名：" + students[i][0] + "，年龄：" + students[i][1] + "，性别：" + students[i][2]);
+        }
+
+        String[] names = {"张三", "李四", "王五", "赵六", "赵七"};
+        for (int i = 0; i < names.length; i++) {
+            System.out.println("姓名String[]：" + names[i]);
+        }
+
+        // 循环的学习
+        // for
+        for (int i = 0; i < 10; i++) {
+            System.out.println("i的值为：" + i);
+        }
+
+        // do-while:最后结束前，会执行一次循环
+        int i1 = 0;
+        do {
+            i1++;
+            System.out.println("i1的值为：" + i1);
+        } while (i1 < 10);
+
+        // while
+        int i2 = 0;
+        while (i2 < 10) {
+            i2++;
+            if (i2 == 5) {
+                continue;
+            }
+            if (i2 == 8) {
+                break;
+            }
+            System.out.println("i2的值为：" + i2);
+        }
+
+        // 双循环，打印星星
+        for (int i = 1; i <= 10; i++) {
+            for (int k = 10; k > i; k--) {
+                System.out.print("   ");
+            }
+            for (int j = 1; j <= i; j++) {
+                System.out.print("*  ");
+            }
+            System.out.println();
+        }
+
+        // lambda表达式
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+
+        list.forEach(e -> System.out.println(e));
+        list.forEach(System.out::println);
+
+        // switch
+        int a = 1;
+        switch (a) {
+            case 1:
+                System.out.println("当前的a的值是" + 1);
+                break;
+            case 2:
+                System.out.println("当前的a的值是" + 2);
+                break;
+            default:
+                System.out.println("default");
+                break;
+        }
+
+        // Java场景的运算符有哪些？
+        String str22 = "Hello World";
+        boolean result = str22 instanceof String;
+        System.out.println("当前的instanceof类型对比是" + result);
+
+        // 字符串常用变量和函数使用
+        String strstr = "Hello World";
+        System.out.println("字符串的长度是" + strstr.length());
+        System.out.println("字符串的索引是" + strstr.indexOf("World"));
+        System.out.println("字符串的索引是" + strstr.lastIndexOf("World"));
+        System.out.println("字符串的索引是" + strstr.charAt(0));
+        System.out.println("字符串的截取内容是" + strstr.substring(0, 5));
+        System.out.println("字符串的替换内容是" + strstr.replace("World", "World2"));
+        System.out.println("字符串的转换大写内容是" + strstr.toUpperCase());
+        System.out.println("字符串的转换小写内容是" + strstr.toLowerCase());
+        System.out.println("字符串的去掉前后空格内容是" + strstr.trim());
+        System.out.println(strstr.equals("World"));
+
+
+        // 包装类型：
+        Integer integer = 1;
+        Long long1 = 1L;
+        Float float1 = 1.0f;
+        Double double1 = 1.0;
+        Boolean boolean1 = true;
+        Character character = 'a';
+        System.out.println(integer);
+        System.out.println(long1);
+        System.out.println(float1);
+        System.out.println(double1);
+        System.out.println(boolean1);
+        System.out.println(character);
+
+
+        // string 字符
+        Byte b = new Byte((byte) 127);
+        System.out.println("Byte object: " + b);
+        System.out.println(b == 127);
+        System.out.println(b.equals(127));
+
+        System.out.println("Byte value: " + b.byteValue());
+
+    }
+
+
+    public void HashMapFn() {
+        // 基本hash使用
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("1", "1");
+        hashMap.put("2", "2");
+        hashMap.put("3", "3");
+        System.out.println(hashMap.get("1"));
+        System.out.println(hashMap.get("2"));
+        System.out.println(hashMap.get("3"));
+
+        System.out.println(hashMap.get("4"));
+        // 遍历hash表
+//        for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+//            System.out.println(entry.getKey() + "--" + entry.getValue());
+//        }
+
+        // remove
+        hashMap.remove("1");
+
+        // contains
+        System.out.println(hashMap.containsKey("1"));
+        System.out.println(hashMap.containsValue("1"));
+        System.out.println(hashMap.isEmpty());
+
+        System.out.println("Hashtable部分学习");
+        Hashtable<String, String> hashtable = new Hashtable();
+        hashtable.put("1", "1");
+        hashtable.put("2", "2");
+
+
+//        for (Map.Entry entry : hashtable.entrySet()) {
+//            System.out.println(entry.getKey() + "--" + entry.getValue());
+//        }
+
+        // linkhashMap
+        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap();
+        linkedHashMap.put("1", "1");
+        linkedHashMap.put("2", "2");
+//        for (Map.Entry entry : linkedHashMap.entrySet()) {
+//            System.out.println(entry.getKey() + "--" + entry.getValue());
+//        }
+
+        System.out.println("hashMap");
+        System.out.println(linkedHashMap.containsValue("1"));
+        System.out.println(linkedHashMap.containsValue("3"));
+
+        // 获取指定时间
+        Date date = new Date();
+        System.out.println(date);
+
+        // 获取指定时间
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(calendar.getTime());
+
+        // 获取格式化的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(sdf.format(date));
+
+        // 实例化一个时间对象，然后添加内容：添加时间
+        //时间添加
+        Date date2 = new Date();// 1.获取当前的时间对象
+        Calendar calendar2 = Calendar.getInstance();// 2.获取日历对象
+        calendar.setTime(date2);// 3.设置日历的时间
+        calendar.add(Calendar.MONTH, 1);// 4.添加时间
+        date2 = calendar2.getTime();
+        System.out.println(date2);
+
+        // 获取当前的时区
+        TimeZone timeZone = TimeZone.getDefault();
+        System.out.println(timeZone.getDisplayName());
+
+        // 时间比较函数功能
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime localDateTime1 = LocalDateTime.of(2020, 1, 1, 0, 0, 0);
+        if (localDateTime.isAfter(localDateTime1)) {
+            System.out.println("localDateTime > localDateTime1");
+        } else if (localDateTime.isBefore(localDateTime1)) {
+            System.out.println("localDateTime < localDateTime1");
+        }
+
+
+    }
+
+
+    // enum
+    enum TestEnum {
+        ONE,
+        TWO,
+        THREE;
+
+        public static void main(String[] str) {
+            System.out.println(TestEnum.ONE);
+        }
+    }
+    // List学习记录
+    public void ListValue() {
+        // list
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        System.out.println(list);
+
+        for (String str : list) {
+            System.out.println(str);
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
+
+        // list2
+        List list2 = new ArrayList();
+        list2.add("1");
+        list2.add(22);
+
+        System.out.println(list2);
+//        for (Object obj : list2) {
+//            System.out.println(obj);
+//        }
+    }
     public static void main(String[] str) {
+
+        System.out.println("数组");
+        ListSet listSet = new ListSet();
+        listSet.ArrValue();
+        System.out.println("List");
+
         System.out.println("List和Set学习");
 
         // 对象实例化
-        ListSet listSet = new ListSet();
+        ListSet listSet2 = new ListSet();
         listSet.DQueue();
 
         // 文件读写操作：字节流
@@ -189,4 +448,5 @@ public class ListSet {
         // DataOutputStream和DataInputStream
         listSet.DataStreamDemo();
     }
+
 }
