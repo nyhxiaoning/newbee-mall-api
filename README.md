@@ -1,13 +1,34 @@
 # 使用指南
+<<<<<<< HEAD
 ## PC后台管理系统账号
 - admin 
 - newbee-admin1
 
+<<<<<<< HEAD
 密码忘了，还是新注册
 
 ## springBoot增加任何主机访问接口
 Spring Boot 项目：
 找到项目中位于src/main/resources目录下的application.properties或application.yml文件。如果是application.properties，添加配置server.address=0.0.0.0；如果是application.yml，添加配置server: address: 0.0.0.0。配置完成后，重启 Spring Boot 应用，此时应用将绑定到所有网络接口，任何 IP 地址都可以访问该服务。
+=======
+
+>>>>>>> b6bc97d (feat: 配置当前的学习数据结构内容)
+=======
+## 项目常见插件安装
+- Grep Console
+- Chinese
+- 实质原因：System.out.println 本身没有做类型区分打印
+如果打印需要的内容
+这样的函数println默认都会将所有的内容自动转换输出字符串内容；
+  
+### 如果需要打印不同类型，debug的时候查看
+（1）方法1:
+System.out.printf("姓名是：%s，年龄是：%d\n", "Tom", 18);
+（2）方法2: 启动debug的脚本模式
+使用 IDEA 的断点调试功能查看变量类型和值
+
+
+>>>>>>> fa738b2 (feat: 提交本地的内容)
 
 ## 项目启动
 （1）maven插件添加
@@ -23,6 +44,9 @@ Spring Boot 项目：
 
 
 ## 记录开发流程
+### 记录学习基础java知识内容
+[学习问题记录](./demo/学习问题记录.md)
+
 ### 尝试接入一个中间件：2024年10月05日
 （1）加入一个Tlog
 

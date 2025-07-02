@@ -3,6 +3,8 @@ package ltd.newbee.demo;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -371,12 +373,25 @@ public class ListSet {
         }
     }
 
+    //  反射学习记录
+    public void FansheObject(){
+        try {
+            // Field 对象介绍：
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] str) {
+
+        System.out.println("数组");
+        ListSet listSet = new ListSet();
+        System.out.println("List");
+
         System.out.println("List和Set学习");
 
         // 对象实例化
-        ListSet listSet = new ListSet();
+        ListSet listSet2 = new ListSet();
         listSet.DQueue();
 
         // 文件读写操作：字节流
@@ -408,4 +423,5 @@ public class ListSet {
 
 
     }
+
 }
