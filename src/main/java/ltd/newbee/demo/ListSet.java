@@ -377,8 +377,43 @@ public class ListSet {
     public void FansheObject(){
         try {
             // Field 对象介绍：
+
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    static class PersonReflect {
+        String name;
+        int age;
+
+        public PersonReflect(){
+
+        }
+
+        public PersonReflect(String name,int age){
+            this.name = name;
+            this.age = age;
+        }
+
+        public int getAge(){
+            return age;
+        }
+
+        public void setAge(int age){
+            this.age = age;
+        }
+
+        public  String getName(){
+            return name;
+        }
+
+        public void setName(String name){
+            this.name = name;
+        }
+
+        public void sayHello(){
+            System.out.println("姓名：" + name + "，年龄：" + age);
         }
     }
 
@@ -420,6 +455,15 @@ public class ListSet {
 
         // CharArrayReaderFn
         listSet.CharArrayReaderFn();
+
+
+        // TODO:class类的反射，反射内容整理
+        PersonReflect personReflect = new PersonReflect("张三",18);
+
+        Class clazz = personReflect.getClass();
+        System.out.println(clazz.getName());
+        System.out.println(clazz.getSimpleName());
+
 
 
     }
