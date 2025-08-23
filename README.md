@@ -1,19 +1,14 @@
 # 使用指南
-<<<<<<< HEAD
 ## PC后台管理系统账号
 - admin 
 - newbee-admin1
 
-<<<<<<< HEAD
 密码忘了，还是新注册
 
 ## springBoot增加任何主机访问接口
 Spring Boot 项目：
 找到项目中位于src/main/resources目录下的application.properties或application.yml文件。如果是application.properties，添加配置server.address=0.0.0.0；如果是application.yml，添加配置server: address: 0.0.0.0。配置完成后，重启 Spring Boot 应用，此时应用将绑定到所有网络接口，任何 IP 地址都可以访问该服务。
-=======
 
->>>>>>> b6bc97d (feat: 配置当前的学习数据结构内容)
-=======
 ## 项目常见插件安装
 - Grep Console
 - Chinese
@@ -28,7 +23,6 @@ System.out.printf("姓名是：%s，年龄是：%d\n", "Tom", 18);
 使用 IDEA 的断点调试功能查看变量类型和值
 
 
->>>>>>> fa738b2 (feat: 提交本地的内容)
 
 ## 项目启动
 （1）maven插件添加

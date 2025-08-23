@@ -74,16 +74,16 @@ public class IODemo {
 
         // 单独线程启动当前的服务：
         // 启动服务端线程
-        new Thread(() -> ioobj.BioServer()).start();
-
-        try {
-            Thread.sleep(900); // 500ms 等待服务端准备好
-
-            // 启动客户端线程
-            new Thread(() -> ioobj.SocketClient()).start();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+//        new ThreadDemo(() -> ioobj.BioServer()).start();
+//
+//        try {
+//            ThreadDemo.sleep(900); // 500ms 等待服务端准备好
+//
+//            // 启动客户端线程
+//            new ThreadDemo(() -> ioobj.SocketClient()).start();
+//        } catch (Exception e) {
+//            // TODO: handle exception
+//        }
 
     }
 }

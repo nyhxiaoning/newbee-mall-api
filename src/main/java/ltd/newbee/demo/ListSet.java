@@ -1,13 +1,10 @@
 package ltd.newbee.demo;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.io.*;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.lang.reflect.Method;
 import java.util.*;
-import java.io.FileReader;
-import java.io.FileWriter;
 
 public class ListSet {
 
@@ -383,6 +380,30 @@ public class ListSet {
         }
     }
 
+    public class Person1 {
+        String name;
+        int age;
+
+        public Person1() {
+
+        }
+
+        public Person1(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+
+    }
+
     static class PersonReflect {
         String name;
         int age;
@@ -418,6 +439,8 @@ public class ListSet {
     }
 
     public static void main(String[] str) {
+
+
 
         System.out.println("数组");
         ListSet listSet = new ListSet();
@@ -457,12 +480,33 @@ public class ListSet {
         listSet.CharArrayReaderFn();
 
 
-        // TODO:class类的反射，反射内容整理
+        // NOTE:class类的反射，反射内容整理
         PersonReflect personReflect = new PersonReflect("张三",18);
 
         Class clazz = personReflect.getClass();
         System.out.println(clazz.getName());
         System.out.println(clazz.getSimpleName());
+
+        // NOTE:属性描述器案例用法
+        try {
+            PropertyDescriptor propertyDescriptor = new PropertyDescriptor("name", Person1.class);
+            Method readMethod = propertyDescriptor.getReadMethod();
+            Method writeMethod = propertyDescriptor.getWriteMethod();
+
+            Class returnType = readMethod.getReturnType();
+            Class propertyType = propertyDescriptor.getPropertyType();
+
+            System.out.println(returnType);
+            System.out.println(propertyType);
+            System.out.println(propertyDescriptor.getDisplayName());
+            System.out.println(writeMethod);
+
+
+            return;
+
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        }
 
 
 
