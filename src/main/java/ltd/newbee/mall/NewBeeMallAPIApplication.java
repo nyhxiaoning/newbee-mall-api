@@ -10,7 +10,7 @@ public class NewBeeMallAPIApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(NewBeeMallAPIApplication.class, args);
-        System.out.println("28099端口服务开启，注意mysql密码是不是正确");
+        System.out.println("28099 端口服务开启，注意mysql密码是不是正确");
     }
 
 }
