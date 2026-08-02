@@ -3,6 +3,7 @@ package ltd.newbee.common;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @MapperScan({
     "ltd.newbee.goods.dao",
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
     "ltd.newbee.user.dao"
 })
 @SpringBootApplication
+@ComponentScan("ltd.newbee")
 public class NewBeeMallAPIApplication {
 
     public static void main(String[] args) {

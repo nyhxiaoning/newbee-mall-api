@@ -37,7 +37,7 @@ public class Swagger3Config {
                 .apiInfo(apiInfo())
                 .ignoredParameterTypes(MallUser.class, AdminUserToken.class)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("ltd.newbee.mall.api"))
+                .apis(RequestHandlerSelectors.basePackage("ltd.newbee"))
                 .paths(PathSelectors.any())
                 .build()
                 .globalRequestParameters(getGlobalRequestParameters());
