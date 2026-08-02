@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 使用指南
 初始化项目的时候，如果端口出现问题
 第一步：sudo netstat -vanp tcp -v | grep 28099
@@ -8,6 +9,9 @@ COMMAND  PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 java    1234  user  10u  IPv6  0x1234567890abcdef      0t0  TCP *:28099 (LISTEN)
 比如上吗，那么PID是1234：
 
+=======
+# 个人使用指南
+>>>>>>> 93610c0 (feat: 配置当前的分支)
 ## PC后台管理系统账号
 - admin 
 - newbee-admin1
