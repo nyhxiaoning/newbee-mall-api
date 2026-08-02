@@ -1,7 +1,37 @@
 # 使用指南
 
-## 启动方式：
-java -jar app.jar --server.port=9000
+## 启动方式：java项目
+
+使用 `application-dev.properties` 配置（连接 Docker MySQL，端口 33060），启动前先确保 Docker MySQL 已运行：
+
+```bash
+cd docker-mysql && docker-compose up -d
+```
+
+### 方式一：Maven 启动（推荐开发调试）
+根目录运行即可：下面的代码含义：启动项目
+-Dspring-boot.run.profiles=dev，这里的含义：-D注入启动参数。
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+**优点：** 一键启动，代码修改后自动热更新，适合日常开发
+**缺点：** 首次启动需解析 Maven 依赖，较慢
+
+### 方式二：Java -jar 启动（适合部署验证）
+
+```bash
+# 先编译打包
+mvn clean package -DskipTests
+
+# 再启动
+java -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar --spring.profiles.active=dev
+```
+
+**优点：** 启动速度快，更接近生产部署方式，可配合 nohup 后台运行
+**缺点：** 代码修改后需重新打包才能生效
+
+
 
 
 
@@ -10,15 +40,6 @@ java -jar app.jar --server.port=9000
 ### docker配置说明：https://gitee.com/node-project-summary/docker-common.git，fen zhi
 分支：feature/webui-config
 分支：找到对应的配置内容进行整理即可
-
-
-### 运行：Java 服务本地运行：
-### 方式1：
-mvn spring-boot:run
-
-
-### 方式2：
-./mvnw spring-boot:run
 
 
 
