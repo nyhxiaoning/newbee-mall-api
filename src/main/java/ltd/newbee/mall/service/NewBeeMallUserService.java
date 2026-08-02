@@ -34,6 +34,13 @@ public interface NewBeeMallUserService {
     String login(String loginName, String passwordMD5);
 
     /**
+     * 验证码登录（免密码）
+     * @param loginName
+     * @return
+     */
+    String loginByCaptcha(String loginName);
+
+    /**
      * 用户信息修改
      *
      * @param mallUser

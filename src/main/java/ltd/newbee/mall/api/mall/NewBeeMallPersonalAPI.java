@@ -17,6 +17,7 @@ import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.config.annotation.TokenToMallUser;
 import ltd.newbee.mall.api.mall.vo.NewBeeMallUserVO;
 import ltd.newbee.mall.entity.MallUser;
+import ltd.newbee.mall.service.CaptchaService;
 import ltd.newbee.mall.service.NewBeeMallUserService;
 import ltd.newbee.mall.util.*;
 import org.slf4j.Logger;
@@ -35,15 +36,30 @@ public class NewBeeMallPersonalAPI {
     @Resource
     private NewBeeMallUserService newBeeMallUserService;
 
+    @Resource
+    private CaptchaService captchaService;
+
     private static final Logger logger = LoggerFactory.getLogger(NewBeeMallPersonalAPI.class);
 
     @PostMapping("/user/login")
     @ApiOperation(value = "登录接口", notes = "返回token")
     public Result<String> login(@RequestBody @Valid MallUserLoginParam mallUserLoginParam) {
+        //验证码校验
+        if (!captchaService.verifyCaptcha(mallUserLoginParam.getCaptchaKey(), mallUserLoginParam.getCaptchaCode(), mallUserLoginParam.getLoginName())) {
+            return ResultGenerator.genErrorResult(400, ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
+        }
         if (!NumberUtil.isPhone(mallUserLoginParam.getLoginName())){
             return ResultGenerator.genFailResult(ServiceResultEnum.LOGIN_NAME_IS_NOT_PHONE.getResult());
         }
-        String loginResult = newBeeMallUserService.login(mallUserLoginParam.getLoginName(), mallUserLoginParam.getPasswordMd5());
+
+        String loginResult;
+        // 验证码登录（无密码）
+        if (!StringUtils.hasText(mallUserLoginParam.getPasswordMd5())) {
+            loginResult = newBeeMallUserService.loginByCaptcha(mallUserLoginParam.getLoginName());
+        } else {
+            // 密码登录
+            loginResult = newBeeMallUserService.login(mallUserLoginParam.getLoginName(), mallUserLoginParam.getPasswordMd5());
+        }
 
         logger.info("login api,loginName={},loginResult={}", mallUserLoginParam.getLoginName(), loginResult);
 

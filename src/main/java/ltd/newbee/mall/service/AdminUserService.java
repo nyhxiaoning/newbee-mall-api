@@ -21,6 +21,13 @@ public interface AdminUserService {
     String login(String userName, String password);
 
     /**
+     * 验证码登录（免密码）
+     * @param userName
+     * @return
+     */
+    String loginByCaptcha(String userName);
+
+    /**
      * 获取用户信息
      *
      * @param loginUserId

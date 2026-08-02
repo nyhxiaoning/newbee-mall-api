@@ -18,6 +18,8 @@ public interface AdminUserMapper {
      */
     AdminUser login(@Param("userName") String userName, @Param("password") String password);
 
+    AdminUser selectByLoginName(@Param("userName") String userName);
+
     AdminUser selectByPrimaryKey(Long adminUserId);
 
     int updateByPrimaryKeySelective(AdminUser record);

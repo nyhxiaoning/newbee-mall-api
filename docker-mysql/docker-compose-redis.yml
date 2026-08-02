@@ -28,6 +28,7 @@ services:
             - "${REDIS_DATA_PATH}:/data"
 
 
+
         command:
 
             redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes

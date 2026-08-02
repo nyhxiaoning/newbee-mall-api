@@ -24,7 +24,14 @@ public class MallUserLoginParam implements Serializable {
     @NotEmpty(message = "登录名不能为空")
     private String loginName;
 
-    @ApiModelProperty("用户密码(需要MD5加密)")
-    @NotEmpty(message = "密码不能为空")
+    @ApiModelProperty("用户密码(需要MD5加密)，验证码登录时可为空")
     private String passwordMd5;
+
+    @ApiModelProperty("验证码key(调用/api/v1/captcha获取)")
+    @NotEmpty(message = "验证码key不能为空")
+    private String captchaKey;
+
+    @ApiModelProperty("验证码")
+    @NotEmpty(message = "验证码不能为空")
+    private String captchaCode;
 }

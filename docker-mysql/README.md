@@ -1,5 +1,30 @@
 # docker-mysql
+## docker启动后，配置删除内容，如果有配置修改
+```
+docker启动，重启问题：是否可以使用数据库
+1.如果不想要动数据库，那么restart，不会重新操作数据库
+cd docker-mysql
+docker-compose restart
 
+2.指定配置文件启动
+cd docker-mysql
+
+# 单独启动 Redis
+docker-compose -f docker-compose-redis.yml up -d
+
+# 同时启动 MySQL + Redis
+docker-compose -f docker-compose.yml -f docker-compose-redis.yml up -d
+
+3.完全重置数据库
+cd docker-mysql
+sudo docker-compose down
+sudo rm -rf data/
+sudo docker-compose up -d
+# 指定配置文件docker-compose.yml启动
+sudo docker-compose -f docker-compose-redis.yml up -d
+
+
+```
 #### 介绍
 
 Docker MySQL + Redis 本地开发环境。

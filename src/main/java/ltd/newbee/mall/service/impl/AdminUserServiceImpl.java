@@ -68,6 +68,35 @@ public class AdminUserServiceImpl implements AdminUserService {
         return ServiceResultEnum.LOGIN_ERROR.getResult();
     }
 
+    @Override
+    public String loginByCaptcha(String userName) {
+        AdminUser loginAdminUser = adminUserMapper.selectByLoginName(userName);
+        if (loginAdminUser != null) {
+            String token = getNewToken(System.currentTimeMillis() + "", loginAdminUser.getAdminUserId());
+            AdminUserToken adminUserToken = newBeeAdminUserTokenMapper.selectByPrimaryKey(loginAdminUser.getAdminUserId());
+            Date now = new Date();
+            Date expireTime = new Date(now.getTime() + 2 * 24 * 3600 * 1000);
+            if (adminUserToken == null) {
+                adminUserToken = new AdminUserToken();
+                adminUserToken.setAdminUserId(loginAdminUser.getAdminUserId());
+                adminUserToken.setToken(token);
+                adminUserToken.setUpdateTime(now);
+                adminUserToken.setExpireTime(expireTime);
+                if (newBeeAdminUserTokenMapper.insertSelective(adminUserToken) > 0) {
+                    return token;
+                }
+            } else {
+                adminUserToken.setToken(token);
+                adminUserToken.setUpdateTime(now);
+                adminUserToken.setExpireTime(expireTime);
+                if (newBeeAdminUserTokenMapper.updateByPrimaryKeySelective(adminUserToken) > 0) {
+                    return token;
+                }
+            }
+        }
+        return ServiceResultEnum.LOGIN_ERROR.getResult();
+    }
+
 
     /**
      * 获取token值

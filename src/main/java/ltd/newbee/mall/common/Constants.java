@@ -33,5 +33,10 @@ public class Constants {
 
     public final static int TOKEN_LENGTH = 32;//token字段长度
 
+    //验证码
+    public final static String CAPTCHA_REDIS_KEY_PREFIX = "captcha:";//Redis key前缀
+    public final static int CAPTCHA_EXPIRE_SECONDS = 300;//验证码过期时间（5分钟）
+    public final static int CAPTCHA_LENGTH = 4;//验证码字符长度
+
     public final static String USER_INTRO = "随新所欲，蜂富多彩";//默认简介
 }
