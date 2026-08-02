@@ -29,7 +29,7 @@ Copyright (c) 2019-2021 十三 all rights reserved.
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <mybatis-starter.version>2.2.2</mybatis-starter.version>
-        <lombok.version>1.18.16</lombok.version>
+        <lombok.version>1.18.34</lombok.version>
         <springfox.version>3.0.0</springfox.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
     </properties>
@@ -91,6 +91,19 @@ Copyright (c) 2019-2021 十三 all rights reserved.
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>
