@@ -27,7 +27,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         String key = UUID.randomUUID().toString().replace("-", "");
         String redisKey = Constants.CAPTCHA_REDIS_KEY_PREFIX + key;
 
-        // 存储格式：code|userName（如果userName为空只存code）
+        // 存储格式：有userName则绑定 code|userName，无则只存 code
         String value = StringUtils.hasText(userName) ? code + "|" + userName : code;
         stringRedisTemplate.opsForValue().set(redisKey, value,
                 Constants.CAPTCHA_EXPIRE_SECONDS, TimeUnit.SECONDS);
@@ -50,10 +50,10 @@ public class CaptchaServiceImpl implements CaptchaService {
             return false;
         }
 
-        // 解析存储值：code 或 code|userName
+        // 解析存储值：code|userName 或 plain code
+        int separatorIndex = storedValue.indexOf('|');
         String storedCode;
         String storedUser = null;
-        int separatorIndex = storedValue.indexOf('|');
         if (separatorIndex > 0) {
             storedCode = storedValue.substring(0, separatorIndex);
             storedUser = storedValue.substring(separatorIndex + 1);
@@ -66,9 +66,9 @@ public class CaptchaServiceImpl implements CaptchaService {
             return false;
         }
 
-        // 如果有绑定userName，验证是否匹配
-        if (storedUser != null && StringUtils.hasText(userName)) {
-            return storedUser.equals(userName);
+        // 如果验证码绑定了userName，校验账号是否匹配
+        if (storedUser != null) {
+            return userName != null && storedUser.equals(userName);
         }
 
         return true;

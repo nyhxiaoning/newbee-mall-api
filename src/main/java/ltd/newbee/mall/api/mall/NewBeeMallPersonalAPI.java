@@ -44,17 +44,23 @@ public class NewBeeMallPersonalAPI {
     @PostMapping("/user/login")
     @ApiOperation(value = "登录接口", notes = "返回token")
     public Result<String> login(@RequestBody @Valid MallUserLoginParam mallUserLoginParam) {
-        //验证码校验
-        if (!captchaService.verifyCaptcha(mallUserLoginParam.getCaptchaKey(), mallUserLoginParam.getCaptchaCode(), mallUserLoginParam.getLoginName())) {
-            return ResultGenerator.genErrorResult(400, ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
+        // 判断是否走验证码登录
+        boolean hasCaptcha = StringUtils.hasText(mallUserLoginParam.getCaptchaKey())
+                && StringUtils.hasText(mallUserLoginParam.getCaptchaCode());
+
+        if (hasCaptcha) {
+            // 验证码校验
+            if (!captchaService.verifyCaptcha(mallUserLoginParam.getCaptchaKey(), mallUserLoginParam.getCaptchaCode(), mallUserLoginParam.getLoginName())) {
+                return ResultGenerator.genErrorResult(400, ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
+            }
         }
         if (!NumberUtil.isPhone(mallUserLoginParam.getLoginName())){
             return ResultGenerator.genFailResult(ServiceResultEnum.LOGIN_NAME_IS_NOT_PHONE.getResult());
         }
 
         String loginResult;
-        // 验证码登录（无密码）
-        if (!StringUtils.hasText(mallUserLoginParam.getPasswordMd5())) {
+        if (hasCaptcha && !StringUtils.hasText(mallUserLoginParam.getPasswordMd5())) {
+            // 验证码免密登录
             loginResult = newBeeMallUserService.loginByCaptcha(mallUserLoginParam.getLoginName());
         } else {
             // 密码登录

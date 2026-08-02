@@ -7,7 +7,7 @@ import ltd.newbee.mall.service.CaptchaService;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -20,7 +20,7 @@ public class CaptchaController {
     private CaptchaService captchaService;
 
     @GetMapping({"/api/v1/captcha", "/manage-api/v1/captcha"})
-    @ApiOperation(value = "获取验证码", notes = "返回base64图片和captchaKey；可选传入userName绑定验证码到指定用户")
+    @ApiOperation(value = "获取验证码", notes = "可选传入userName绑定验证码到指定账号，登录时带userName请求可确保验证码与账号对应")
     public Result<CaptchaVO> getCaptcha(@RequestParam(required = false) String userName) {
         CaptchaVO captchaVO = captchaService.generateCaptcha(userName);
         return ResultGenerator.genSuccessResult(captchaVO);

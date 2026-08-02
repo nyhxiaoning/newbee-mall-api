@@ -53,14 +53,20 @@ public class NewBeeAdminManageUserAPI {
 
     @RequestMapping(value = "/adminUser/login", method = RequestMethod.POST)
     public Result<String> login(@RequestBody @Valid AdminLoginParam adminLoginParam) {
-        //验证码校验
-        if (!captchaService.verifyCaptcha(adminLoginParam.getCaptchaKey(), adminLoginParam.getCaptchaCode(), adminLoginParam.getUserName())) {
-            return ResultGenerator.genErrorResult(400, ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
+        // 判断是否走验证码登录
+        boolean hasCaptcha = StringUtils.hasText(adminLoginParam.getCaptchaKey())
+                && StringUtils.hasText(adminLoginParam.getCaptchaCode());
+
+        if (hasCaptcha) {
+            // 验证码校验
+            if (!captchaService.verifyCaptcha(adminLoginParam.getCaptchaKey(), adminLoginParam.getCaptchaCode(), adminLoginParam.getUserName())) {
+                return ResultGenerator.genErrorResult(400, ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
+            }
         }
 
         String loginResult;
-        // 验证码登录（无密码）
-        if (!StringUtils.hasText(adminLoginParam.getPasswordMd5())) {
+        if (hasCaptcha && !StringUtils.hasText(adminLoginParam.getPasswordMd5())) {
+            // 验证码免密登录
             loginResult = adminUserService.loginByCaptcha(adminLoginParam.getUserName());
         } else {
             // 密码登录

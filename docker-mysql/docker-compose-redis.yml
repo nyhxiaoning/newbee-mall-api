@@ -3,6 +3,64 @@ version: "3.9"
 
 services:
 
+    mysqldb:
+
+        image: ${MYSQL_IMAGE}
+        container_name: ${MYSQL_CONTAINER_NAME}
+
+
+        restart: always
+
+
+        env_file:
+
+            - .env
+
+
+        environment:
+
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+            MYSQL_USER: ${MYSQL_USER}
+
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+
+            TZ: ${TZ}
+
+
+
+        ports:
+
+            - "${MYSQL_PORT}:${MYSQL_CONTAINER_PORT}"
+
+
+
+        volumes:
+
+            # 数据持久化
+            - "${MYSQL_DATA_PATH}:/var/lib/mysql"
+
+
+            # 初始化SQL
+            - "./init:/docker-entrypoint-initdb.d"
+
+
+
+        command:
+
+            --character-set-server=${MYSQL_CHARSET}
+            --collation-server=${MYSQL_COLLATION}
+
+
+        networks:
+
+            - app-network
+
+
+
     redis:
 
         image: ${REDIS_IMAGE}
@@ -36,12 +94,12 @@ services:
 
         networks:
 
-            - redis-network
+            - app-network
 
 
 
 networks:
 
-    redis-network:
+    app-network:
 
         driver: bridge

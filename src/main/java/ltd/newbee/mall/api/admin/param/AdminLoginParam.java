@@ -24,11 +24,9 @@ public class AdminLoginParam implements Serializable {
     @ApiModelProperty("用户密码(需要MD5加密)，验证码登录时可为空")
     private String passwordMd5;
 
-    @ApiModelProperty("验证码key(调用/api/v1/captcha获取)")
-    @NotEmpty(message = "验证码key不能为空")
+    @ApiModelProperty("验证码key(调用/api/v1/captcha获取)，密码登录时可不传")
     private String captchaKey;
 
     @ApiModelProperty("验证码")
-    @NotEmpty(message = "验证码不能为空")
     private String captchaCode;
 }
