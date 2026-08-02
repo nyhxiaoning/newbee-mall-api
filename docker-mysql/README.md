@@ -2,41 +2,63 @@
 
 #### 介绍
 
-Docker MySQL 本地开发环境。
+Docker MySQL + Redis 本地开发环境。
 
-连接信息
+#### 连接信息
 
+**MySQL**
 
-项目	值
-Host	localhost 或 127.0.0.1
-Port	33060
-root 密码	nyh123
-普通用户	newbee
-普通用户密码	newbee123
-数据库	newbee_mall_db_v2
+| 项目 | 值 |
+|---|---|
+| Host | localhost |
+| Port | 33060 |
+| root 密码 | nyh123 |
+| 普通用户 | newbee |
+| 普通用户密码 | newbee123 |
+| 数据库 | newbee_mall_db_v2 |
 
-本地连接：直接使用roor，密码nyh123，端口：33060
+**Redis**
+
+| 项目 | 值 |
+|---|---|
+| Host | localhost |
+| Port | 63790 |
+| 密码 | redis123 |
 
 #### 目录结构
 
 ```
 docker-mysql/
-├── .env               # 环境变量配置（镜像、端口、密码等）
-├── .gitignore          # 忽略 data/ 目录
-├── docker-compose.yml  # Docker Compose 编排
-├── README.md           # 本文件
-├── init/               # SQL 初始化脚本（首次启动时自动执行）
-│   └── *.sql           # 例如 schema.sql、seed-data.sql
-└── data/               # MySQL 数据持久化目录（已 gitignore）
-    └── db/mysql/
+├── .env                        # 环境变量配置
+├── .gitignore                   # 忽略 data/ 目录
+├── docker-compose.yml           # MySQL 编排
+├── docker-compose-redis.yml     # Redis 编排
+├── README.md                    # 本文件
+├── init/                        # SQL 初始化脚本
+│   └── *.sql
+└── data/                        # 数据持久化目录（已 gitignore）
+    ├── db/mysql/
+    └── redis/
 ```
 
 #### 使用说明
 
-**首次启动：**
+**启动 MySQL：**
 
 ```bash
 docker-compose up -d
+```
+
+**启动 Redis：**
+
+```bash
+docker-compose -f docker-compose-redis.yml up -d
+```
+
+**同时启动 MySQL + Redis：**
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose-redis.yml up -d
 ```
 
 **重启：**
@@ -55,19 +77,14 @@ docker-compose up -d
 
 #### 环境变量
 
-编辑 `.env` 文件可配置：
-
-- 数据库密码
-- 宿主机端口（默认 `33060` → 容器 `3306`）
-- 时区、字符集
-- 数据持久化路径
+编辑 `.env` 文件可配置 MySQL 和 Redis 的全部参数（密码、端口、数据路径等）。
 
 #### 初始化 SQL
 
-将 DDL/DML 脚本放入 `init/` 目录（如 `init.sql`），首次启动容器时 MySQL 会自动按文件名顺序执行。注意：**仅首次启动时执行**，如果已有 `data/` 目录存在则不会重复执行。
+将 DDL/DML 脚本放入 `init/` 目录，首次启动 MySQL 时自动按文件名顺序执行。注意：**仅首次启动时执行**，如果已有 `data/` 目录存在则不会重复执行。
 
 #### 代码同步注意事项
 
-- `init/` 目录下的 SQL 脚本应当提交到 Git，方便他人拉取后直接 `docker-compose up -d` 即可运行
+- `init/` 目录下的 SQL 脚本应当提交到 Git
 - `data/` 目录**不要提交到 Git**（已在 `.gitignore` 中忽略），属于本地运行时数据
 - 如果需要干净的数据库环境，执行上面的「完全重置」步骤即可

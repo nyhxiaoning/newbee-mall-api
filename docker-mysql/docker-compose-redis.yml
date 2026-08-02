@@ -1,0 +1,46 @@
+version: "3.9"
+
+
+services:
+
+    redis:
+
+        image: ${REDIS_IMAGE}
+        container_name: ${REDIS_CONTAINER_NAME}
+
+
+        restart: always
+
+
+        env_file:
+
+            - .env
+
+
+        ports:
+
+            - "${REDIS_PORT}:${REDIS_CONTAINER_PORT}"
+
+
+        volumes:
+
+            # 数据持久化
+            - "${REDIS_DATA_PATH}:/data"
+
+
+        command:
+
+            redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+
+
+        networks:
+
+            - redis-network
+
+
+
+networks:
+
+    redis-network:
+
+        driver: bridge
