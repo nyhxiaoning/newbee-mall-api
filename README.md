@@ -1,5 +1,43 @@
 # 使用指南
 
+## 启动方式：
+java -jar app.jar --server.port=9000
+
+
+
+## 开发模式推荐：开发模式推荐（Spring Boot + Docker）
+数据库Docker+Java本地速度快。
+### docker配置说明：https://gitee.com/node-project-summary/docker-common.git，fen zhi
+分支：feature/webui-config
+分支：找到对应的配置内容进行整理即可
+
+
+### 运行：Java 服务本地运行：
+### 方式1：
+mvn spring-boot:run
+
+
+### 方式2：
+./mvnw spring-boot:run
+
+
+
+
+### Docker管理：
+
+只 Docker 管：
+
+### java
+mysql
+redis
+nacos
+minio
+rabbitmq
+
+
+
+
+
 初始化项目的时候，如果端口出现问题
 第一步：sudo netstat -vanp tcp -v | grep 28099
 或通过：sudo lsof -i :28099
@@ -8,6 +46,50 @@
 COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
 java 1234 user 10u IPv6 0x1234567890abcdef 0t0 TCP \*:28099 (LISTEN)
 比如上吗，那么 PID 是 1234：
+
+## 配置文件：application.properties和application.yml有什么区别
+- application.properties（键值对）
+- application.yml（树形结构）
+
+小的demo推荐：application.properties，如果是大的项目yml
+application.yml + profile 分环境管理
+
+### 多环境配置和优先级
+application.properties
+application-dev.properties
+application-prod.properties
+
+```
+命令行参数
+       ↓
+环境变量
+       ↓
+application-{profile}.yml
+       ↓
+application.yml
+       ↓
+application.properties
+       ↓
+默认配置
+
+```
+
+
+## 环境docker-compose部署使用
+### 文件夹结构
+```
+java-project/
+├── docker-compose.yml
+├── mysql/
+│   ├── data/
+│   └── init/
+│       └── init.sql
+├── app/
+│   └── newbee-mall.jar
+└── logs/
+
+```
+
 
 ## PC 后台管理系统账号
 
@@ -35,6 +117,10 @@ Spring Boot 项目：
 System.out.printf("姓名是：%s，年龄是：%d\n", "Tom", 18);
 （2）方法 2: 启动 debug 的脚本模式
 使用 IDEA 的断点调试功能查看变量类型和值
+
+
+
+
 
 # 具体项目说明：（先学习整体内容）
 
