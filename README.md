@@ -14,6 +14,50 @@ java    1234  user  10u  IPv6  0x1234567890abcdef      0t0  TCP *:28099 (LISTEN)
 
 密码忘了，还是新注册
 
+## java项目两种结构：
+### 第一种：按照分层文件夹进行分类，同一类放在一个文件夹
+- 当前项目
+
+
+### 第二种：按照业务模块和公共文件夹分类：
+- 另一种项目架构：
+
+
+## 另一种结构案例：按业务模块拆分
+```
+src/main/java/com/demo
+
+├── common
+│   ├── exception
+│   ├── response
+│   └── utils
+│
+├── user
+│   ├── controller
+│   ├── service
+│   ├── mapper
+│   ├── entity
+│   └── dto
+│
+├── order
+│   ├── controller
+│   ├── service
+│   ├── mapper
+│   ├── entity
+│   └── dto
+│
+├── product
+│   ├── controller
+│   ├── service
+│   ├── mapper
+│   ├── entity
+│   └── dto
+
+```
+
+
+
+
 ## springBoot增加任何主机访问接口
 Spring Boot 项目：
 找到项目中位于src/main/resources目录下的application.properties或application.yml文件。如果是application.properties，添加配置server.address=0.0.0.0；如果是application.yml，添加配置server: address: 0.0.0.0。配置完成后，重启 Spring Boot 应用，此时应用将绑定到所有网络接口，任何 IP 地址都可以访问该服务。
