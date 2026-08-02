@@ -1,18 +1,135 @@
 # 使用指南
-初始化项目的时候，如果端口出现问题
+
+## 启动方式：java项目
+
+使用 `application-dev.properties` 配置（连接 Docker MySQL，端口 33060），启动前先确保 Docker MySQL 已运行：
+
+```bash
+cd docker-mysql && docker-compose up -d
+```
+
+### 方式一：Maven 启动（推荐开发调试）
+根目录运行即可：下面的代码含义：启动项目
+-Dspring-boot.run.profiles=dev，这里的含义：-D注入启动参数。
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+**优点：** 一键启动，代码修改后自动热更新，适合日常开发
+**缺点：** 首次启动需解析 Maven 依赖，较慢
+
+### 方式二：Java -jar 启动（适合部署验证）
+
+```bash
+# 先编译打包
+mvn clean package -DskipTests
+
+# 再启动
+java -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar --spring.profiles.active=dev
+```
+
+**优点：** 启动速度快，更接近生产部署方式，可配合 nohup 后台运行
+**缺点：** 代码修改后需重新打包才能生效
+
+
+
+
+
+## 开发模式推荐：开发模式推荐（Spring Boot + Docker）
+数据库Docker+Java本地速度快。
+### docker配置说明：https://gitee.com/node-project-summary/docker-common.git，fen zhi
+分支：feature/webui-config
+分支：找到对应的配置内容进行整理即可
+
+
+
+
+### Docker管理：
+
+只 Docker 管：
+
+### java
+mysql
+redis
+nacos
+minio
+rabbitmq
+
+## 异常报错处理：
+FileSizeLimitExceededException  (Tomcat 底层)
+↓ 包装
+IllegalStateException
+↓ 包装
+MaxUploadSizeExceededException  (Spring 层)
+↓ 捕获
+@ExceptionHandler(MaxUploadSizeExceededException.class)  ← 我们的修复
+
+
+
+
+
+
+## 关闭多余的服务：初始化项目的时候，如果端口出现问题
 第一步：sudo netstat -vanp tcp -v | grep 28099
 或通过：sudo lsof -i :28099
 
-第二步：sudo kill -9 对应的PID
-COMMAND  PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
-java    1234  user  10u  IPv6  0x1234567890abcdef      0t0  TCP *:28099 (LISTEN)
-比如上吗，那么PID是1234：
+第二步：sudo kill -9 对应的 PID
+COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
+java 1234 user 10u IPv6 0x1234567890abcdef 0t0 TCP \*:28099 (LISTEN)
+比如上吗，那么 PID 是 1234：
 
-## PC后台管理系统账号
-- admin 
+## 配置文件：application.properties和application.yml有什么区别
+- application.properties（键值对）
+- application.yml（树形结构）
+
+小的demo推荐：application.properties，如果是大的项目yml
+application.yml + profile 分环境管理
+
+### 多环境配置和优先级
+application.properties
+application-dev.properties
+application-prod.properties
+
+```
+命令行参数
+       ↓
+环境变量
+       ↓
+application-{profile}.yml
+       ↓
+application.yml
+       ↓
+application.properties
+       ↓
+默认配置
+
+```
+
+
+## 环境docker-compose部署使用
+### 文件夹结构
+```
+java-project/
+├── docker-compose.yml
+├── mysql/
+│   ├── data/
+│   └── init/
+│       └── init.sql
+├── app/
+│   └── newbee-mall.jar
+└── logs/
+
+```
+
+
+## PC 后台管理系统账号
+
+- admin
 - newbee-admin1
 
-密码忘了，还是新注册
+密码 123456
+
+## springBoot 增加任何主机访问接口
 
 ## java项目两种结构：
 ### 第一种：按照分层文件夹进行分类，同一类放在一个文件夹
@@ -60,60 +177,71 @@ src/main/java/com/demo
 
 ## springBoot增加任何主机访问接口
 Spring Boot 项目：
-找到项目中位于src/main/resources目录下的application.properties或application.yml文件。如果是application.properties，添加配置server.address=0.0.0.0；如果是application.yml，添加配置server: address: 0.0.0.0。配置完成后，重启 Spring Boot 应用，此时应用将绑定到所有网络接口，任何 IP 地址都可以访问该服务。
+找到项目中位于 src/main/resources 目录下的 application.properties 或 application.yml 文件。如果是 application.properties，添加配置 server.address=0.0.0.0；如果是 application.yml，添加配置 server: address: 0.0.0.0。配置完成后，重启 Spring Boot 应用，此时应用将绑定到所有网络接口，任何 IP 地址都可以访问该服务。
 
-## 项目常见插件安装
+### 项目中 Idea 常见插件安装
+
 - Grep Console
 - Chinese
 - 实质原因：System.out.println 本身没有做类型区分打印
-如果打印需要的内容
-这样的函数println默认都会将所有的内容自动转换输出字符串内容；
-  
-### 如果需要打印不同类型，debug的时候查看
-（1）方法1:
+  如果打印需要的内容
+  这样的函数 println 默认都会将所有的内容自动转换输出字符串内容；
+
+### 如果需要打印不同类型，debug 的时候查看
+
+（1）方法 1:
 System.out.printf("姓名是：%s，年龄是：%d\n", "Tom", 18);
-（2）方法2: 启动debug的脚本模式
+（2）方法 2: 启动 debug 的脚本模式
 使用 IDEA 的断点调试功能查看变量类型和值
 
 
 
-## 项目启动
-（1）maven插件添加
-配置项目内容，如果发现Maven插件找不到 ，到pom.xml,右键添加maven
+
+
+# 具体项目说明：（先学习整体内容）
+
+说明：这个 newbee-mall-api 项目是一个 标准的单体应用 ，采用前后端分离架构。虽然在业务逻辑上按模块划分（用户、商品、订单等），但在技术架构上仍然是一个整体部署的单一应用。
+
+如果你想学习微服务架构，可以参考同系列的 newbee-mall-cloud 项目，那个才是真正的微服务实现。
+
+## 项目启动后，问题排查汇总
+
+### 项目启动
+
+（1）maven 插件添加
+配置项目内容，如果发现 Maven 插件找不到 ，到 pom.xml,右键添加 maven
 
 （2）启动项目出现问题
+
 - 除了删除缓存，另一个入口文件的启动历史全部删除一遍，然后再次在主入口文件
-进行调试。
-  
+  进行调试。
+
 （2）如果想要增加一个文件进行本地测试
+
 - 增加调试入口
 
-
-
 ## 记录开发流程
-### 记录学习基础java知识内容
+
+### 记录学习基础 java 知识内容
+
 [学习问题记录](./demo/学习问题记录.md)
 
-### 尝试接入一个中间件：2024年10月05日
-（1）加入一个Tlog
+### 尝试接入一个中间件：2024 年 10 月 05 日
 
+（1）加入一个 Tlog
 
-### 尝试增加一个随机每日发布广告管理menu菜单模块：2024年10月05日
-
-
-
-
+### 尝试增加一个随机每日发布广告管理 menu 菜单模块：2024 年 10 月 05 日
 
 newbee-mall 项目是一套电商系统，基于 Spring Boot 和 Vue 以及相关技术栈开发。前台商城系统包含首页门户、商品分类、新品上线、首页轮播、商品推荐、商品搜索、商品展示、购物车、订单结算、订单流程、个人订单管理、会员中心、帮助中心等模块。 后台管理系统包含数据面板、轮播图管理、商品管理、订单管理、会员管理、分类管理、设置等模块。
 
 当前分支的 Spring Boot 版本为 2.7.5，想要学习和使用其它版本可以直接点击下方的分支名称跳转至对应的仓库分支中。
 
-| 分支名称                                                    | Spring Boot Version |
-| ------------------------------------------------------------ | ------------------- |
+| 分支名称                                                                                  | Spring Boot Version |
+| ----------------------------------------------------------------------------------------- | ------------------- |
 | [spring-boot-2.3.7](https://github.com/newbee-ltd/newbee-mall-api/tree/spring-boot-2.3.7) | 2.3.7-RELEASE       |
 | [spring-boot-2.6.x](https://github.com/newbee-ltd/newbee-mall-api/tree/spring-boot-2.6.x) | 2.6.3               |
-| [main](https://github.com/newbee-ltd/nnewbee-mall-api)            | 2.7.5               |
-| [spring-boot-3.x](https://github.com/newbee-ltd/newbee-mall-api/tree/spring-boot-3.x) | 3.1.0               |
+| [main](https://github.com/newbee-ltd/nnewbee-mall-api)                                    | 2.7.5               |
+| [spring-boot-3.x](https://github.com/newbee-ltd/newbee-mall-api/tree/spring-boot-3.x)     | 3.1.0               |
 
 **坚持不易，如果觉得项目还不错的话可以给项目一个 Star 吧，也是对我一直更新代码的一种鼓励啦，谢谢各位的支持。**
 
@@ -123,16 +251,16 @@ newbee-mall 项目是一套电商系统，基于 Spring Boot 和 Vue 以及相�
 
 ![newbee-mall-course-2022](https://github.com/newbee-ltd/newbee-mall-cloud/raw/main/static-files/newbee-mall-course-2023.png)
 
-| 项目名称             | 仓库地址                                                     | 备注                                                         |
-| :------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| newbee-mall          | [newbee-mall in GitHub](https://github.com/newbee-ltd/newbee-mall)<br>[newbee-mall in Gitee](https://gitee.com/newbee-ltd/newbee-mall) | 初始版本、Spring Boot、Thymeleaf、MyBatis、MySQL             |
-| newbee-mall-plus     | [newbee-mall-plus in GitHub](https://github.com/newbee-ltd/newbee-mall-plus)<br/>[newbee-mall-plus in Gitee](https://gitee.com/newbee-ltd/newbee-mall-plus) | 升级版本、优惠券、秒杀、支付、Spring Boot、Thymeleaf、MyBatis、MySQL、Redis |
-| newbee-mall-cloud    | [newbee-mall-cloud in GitHub](https://github.com/newbee-ltd/newbee-mall-cloud)<br/>[newbee-mall-cloud in Gitee](https://gitee.com/newbee-ltd/newbee-mall-cloud) | 微服务版本、分布式事务、Spring Cloud Alibaba、Nacos、Sentinel、OpenFeign、Seata |
-| newbee-mall-api      | [newbee-mall-api in GitHub](https://github.com/newbee-ltd/newbee-mall-api)<br/>[newbee-mall-api in Gitee](https://gitee.com/newbee-ltd/newbee-mall-api) | 前后端分离、Spring Boot、MyBatis、Swagger、MySQL             |
-| newbee-mall-api-go   | [newbee-mall-api-go in GitHub](https://github.com/newbee-ltd/newbee-mall-api-go)<br/>[newbee-mall-api-go in Gitee](https://gitee.com/newbee-ltd/newbee-mall-api-go) | 前后端分离、Go、Gin、MySQL                                   |
-| newbee-mall-vue-app  | [newbee-mall-vue-app in GitHub](https://github.com/newbee-ltd/newbee-mall-vue-app)<br/>[newbee-mall-vue-app in Gitee](https://gitee.com/newbee-ltd/newbee-mall-vue-app) | 前后端分离、Vue2、Vant                                    |
-| newbee-mall-vue3-app | [newbee-mall-vue3-app in GitHub](https://github.com/newbee-ltd/newbee-mall-vue3-app)<br/>[newbee-mall-vue3-app in Gitee](https://gitee.com/newbee-ltd/newbee-mall-vue3-app) | 前后端分离、Vue3、Vue-Router4、Vuex4、Vant3      |
-| vue3-admin           | [vue3-admin in GitHub](https://github.com/newbee-ltd/vue3-admin)<br/>[vue3-admin in Gitee](https://gitee.com/newbee-ltd/vue3-admin) | 前后端分离、Vue3、Element-Plus、Vue-Router4、Vite      |
+| 项目名称             | 仓库地址                                                                                                                                                                    | 备注                                                                            |
+| :------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| newbee-mall          | [newbee-mall in GitHub](https://github.com/newbee-ltd/newbee-mall)<br>[newbee-mall in Gitee](https://gitee.com/newbee-ltd/newbee-mall)                                      | 初始版本、Spring Boot、Thymeleaf、MyBatis、MySQL                                |
+| newbee-mall-plus     | [newbee-mall-plus in GitHub](https://github.com/newbee-ltd/newbee-mall-plus)<br/>[newbee-mall-plus in Gitee](https://gitee.com/newbee-ltd/newbee-mall-plus)                 | 升级版本、优惠券、秒杀、支付、Spring Boot、Thymeleaf、MyBatis、MySQL、Redis     |
+| newbee-mall-cloud    | [newbee-mall-cloud in GitHub](https://github.com/newbee-ltd/newbee-mall-cloud)<br/>[newbee-mall-cloud in Gitee](https://gitee.com/newbee-ltd/newbee-mall-cloud)             | 微服务版本、分布式事务、Spring Cloud Alibaba、Nacos、Sentinel、OpenFeign、Seata |
+| newbee-mall-api      | [newbee-mall-api in GitHub](https://github.com/newbee-ltd/newbee-mall-api)<br/>[newbee-mall-api in Gitee](https://gitee.com/newbee-ltd/newbee-mall-api)                     | 前后端分离、Spring Boot、MyBatis、Swagger、MySQL                                |
+| newbee-mall-api-go   | [newbee-mall-api-go in GitHub](https://github.com/newbee-ltd/newbee-mall-api-go)<br/>[newbee-mall-api-go in Gitee](https://gitee.com/newbee-ltd/newbee-mall-api-go)         | 前后端分离、Go、Gin、MySQL                                                      |
+| newbee-mall-vue-app  | [newbee-mall-vue-app in GitHub](https://github.com/newbee-ltd/newbee-mall-vue-app)<br/>[newbee-mall-vue-app in Gitee](https://gitee.com/newbee-ltd/newbee-mall-vue-app)     | 前后端分离、Vue2、Vant                                                          |
+| newbee-mall-vue3-app | [newbee-mall-vue3-app in GitHub](https://github.com/newbee-ltd/newbee-mall-vue3-app)<br/>[newbee-mall-vue3-app in Gitee](https://gitee.com/newbee-ltd/newbee-mall-vue3-app) | 前后端分离、Vue3、Vue-Router4、Vuex4、Vant3                                     |
+| vue3-admin           | [vue3-admin in GitHub](https://github.com/newbee-ltd/vue3-admin)<br/>[vue3-admin in Gitee](https://gitee.com/newbee-ltd/vue3-admin)                                         | 前后端分离、Vue3、Element-Plus、Vue-Router4、Vite                               |
 
 > 更多 Spring Boot 实战项目可以关注十三的另一个代码仓库 [spring-boot-projects](https://github.com/ZHENFENG13/spring-boot-projects)，该仓库中主要是 Spring Boot 的入门学习教程以及一些常用的 Spring Boot 实战项目教程，包括 Spring Boot 使用的各种示例代码，同时也包括一些实战项目的项目源码和效果展示，实战项目包括基本的 web 开发以及目前大家普遍使用的前后端分离实践项目等，后续会根据大家的反馈继续增加一些实战项目源码，摆脱各种 hello world 入门案例的束缚，真正的掌握 Spring Boot 开发。
 
@@ -187,9 +315,9 @@ newbee-mall 项目是一套电商系统，基于 Spring Boot 和 Vue 以及相�
 
 #### Vue3 + Spring Boot 商城升级版本
 
-- [开篇词：手把手带你搭建Vue3+Spring Boot大型前后端分离项目](https://juejin.im/book/6844733826191589390)
+- [开篇词：手把手带你搭建 Vue3+Spring Boot 大型前后端分离项目](https://juejin.im/book/6844733826191589390)
 - [项目须知和课程约定](https://juejin.im/book/6844733826191589390)
-- [2023年2月小册全新优化升级](https://juejin.im/book/6844733826191589390)
+- [2023 年 2 月小册全新优化升级](https://juejin.im/book/6844733826191589390)
 - [全栈开发！你必须要知道的“前后端分离”](https://juejin.im/book/6844733826191589390)
 - [前端模块化的发展历史](https://juejin.im/book/6844733826191589390)
 - [传统页面和单页面的权衡与抉择](https://juejin.im/book/6844733826191589390)
@@ -201,7 +329,7 @@ newbee-mall 项目是一套电商系统，基于 Spring Boot 和 Vue 以及相�
 - [VSCode 的相关配置及插件介绍](https://juejin.im/book/6844733826191589390)
 - [基础篇：Vue 指令](https://juejin.im/book/6844733826191589390)
 - [Vue3 新特性介绍](https://juejin.im/book/6844733826191589390)
-- [基础篇: CSS 预处理工具Less的介绍及使用](https://juejin.im/book/6844733826191589390)
+- [基础篇: CSS 预处理工具 Less 的介绍及使用](https://juejin.im/book/6844733826191589390)
 - [脚手架工具 Vite](https://juejin.im/book/6844733826191589390)
 - [Vue-Router 浅析原理及使用](https://juejin.im/book/6844733826191589390)
 - [全局状态管理插件 Pinia 简介及使用](https://juejin.im/book/6844733826191589390)
@@ -221,7 +349,7 @@ newbee-mall 项目是一套电商系统，基于 Spring Boot 和 Vue 以及相�
 - [商城移动端开发实战-新蜂商城底部导航(抽离公共组件)](https://juejin.im/book/6844733826191589390)
 - [商城移动端开发实战-新蜂商城登录注册页(前端鉴权)](https://juejin.im/book/6844733826191589390)
 - [商城移动端开发实战-商城首页制作(轮播图、首页商品列表)](https://juejin.im/book/6844733826191589390)
-- [商城移动端开发实战-商品分类页面制作(better-scrol的介绍及使用)](https://juejin.im/book/6844733826191589390)
+- [商城移动端开发实战-商品分类页面制作(better-scrol 的介绍及使用)](https://juejin.im/book/6844733826191589390)
 - [商城移动端开发实战-商品列表页面制作(无限滚动加载)](https://juejin.im/book/6844733826191589390)
 - [商城移动端开发实战-商品详情页面制作(Pinia 购物车数量全局管理)](https://juejin.im/book/6844733826191589390)
 - [商城移动端开发实战-商城购物车页面制作(购物车页)](https://juejin.im/book/6844733826191589390)
@@ -235,11 +363,11 @@ newbee-mall 项目是一套电商系统，基于 Spring Boot 和 Vue 以及相�
 > 大家有任何问题或者建议都可以在 [issues](https://github.com/newbee-ltd/newbee-mall/issues) 中反馈给我，我会慢慢完善这个项目。
 
 - 我的邮箱：2449207463@qq.com
-- QQ技术交流群：719099151 796794009
+- QQ 技术交流群：719099151 796794009
 
 ## 软件著作权
 
->本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
+> 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
 
 ![](https://newbee-mall.oss-cn-beijing.aliyuncs.com/poster/store/newbee-mall-copyright-02.png)
 

@@ -31,6 +31,7 @@ Copyright (c) 2019-2021 十三 all rights reserved.
         <mybatis-starter.version>2.2.2</mybatis-starter.version>
         <lombok.version>1.18.16</lombok.version>
         <springfox.version>3.0.0</springfox.version>
+        <easy-captcha.version>1.6.2</easy-captcha.version>
     </properties>
 
     <dependencies>
@@ -71,6 +72,17 @@ Copyright (c) 2019-2021 十三 all rights reserved.
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>${easy-captcha.version}</version>
         </dependency>
     </dependencies>
 

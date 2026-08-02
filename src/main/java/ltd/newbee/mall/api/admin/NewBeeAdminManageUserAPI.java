@@ -18,6 +18,7 @@ import ltd.newbee.mall.config.annotation.TokenToAdminUser;
 import ltd.newbee.mall.entity.AdminUser;
 import ltd.newbee.mall.entity.AdminUserToken;
 import ltd.newbee.mall.service.AdminUserService;
+import ltd.newbee.mall.service.CaptchaService;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import org.slf4j.Logger;
@@ -45,11 +46,33 @@ public class NewBeeAdminManageUserAPI {
     @Resource
     private AdminUserService adminUserService;
 
+    @Resource
+    private CaptchaService captchaService;
+
     private static final Logger logger = LoggerFactory.getLogger(NewBeeAdminManageUserAPI.class);
 
     @RequestMapping(value = "/adminUser/login", method = RequestMethod.POST)
     public Result<String> login(@RequestBody @Valid AdminLoginParam adminLoginParam) {
-        String loginResult = adminUserService.login(adminLoginParam.getUserName(), adminLoginParam.getPasswordMd5());
+        // 判断是否走验证码登录
+        boolean hasCaptcha = StringUtils.hasText(adminLoginParam.getCaptchaKey())
+                && StringUtils.hasText(adminLoginParam.getCaptchaCode());
+
+        if (hasCaptcha) {
+            // 验证码校验
+            if (!captchaService.verifyCaptcha(adminLoginParam.getCaptchaKey(), adminLoginParam.getCaptchaCode(), adminLoginParam.getUserName())) {
+                return ResultGenerator.genErrorResult(400, ServiceResultEnum.LOGIN_VERIFY_CODE_ERROR.getResult());
+            }
+        }
+
+        String loginResult;
+        if (hasCaptcha && !StringUtils.hasText(adminLoginParam.getPasswordMd5())) {
+            // 验证码免密登录
+            loginResult = adminUserService.loginByCaptcha(adminLoginParam.getUserName());
+        } else {
+            // 密码登录
+            loginResult = adminUserService.login(adminLoginParam.getUserName(), adminLoginParam.getPasswordMd5());
+        }
+
         logger.info("manage login api,adminName={},loginResult={}", adminLoginParam.getUserName(), loginResult);
 
         //登录成功

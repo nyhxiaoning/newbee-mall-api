@@ -89,6 +89,38 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
         return ServiceResultEnum.LOGIN_ERROR.getResult();
     }
 
+    @Override
+    public String loginByCaptcha(String loginName) {
+        MallUser user = mallUserMapper.selectByLoginName(loginName);
+        if (user != null) {
+            if (user.getLockedFlag() == 1) {
+                return ServiceResultEnum.LOGIN_USER_LOCKED_ERROR.getResult();
+            }
+            String token = getNewToken(System.currentTimeMillis() + "", user.getUserId());
+            MallUserToken mallUserToken = newBeeMallUserTokenMapper.selectByPrimaryKey(user.getUserId());
+            Date now = new Date();
+            Date expireTime = new Date(now.getTime() + 2 * 24 * 3600 * 1000);
+            if (mallUserToken == null) {
+                mallUserToken = new MallUserToken();
+                mallUserToken.setUserId(user.getUserId());
+                mallUserToken.setToken(token);
+                mallUserToken.setUpdateTime(now);
+                mallUserToken.setExpireTime(expireTime);
+                if (newBeeMallUserTokenMapper.insertSelective(mallUserToken) > 0) {
+                    return token;
+                }
+            } else {
+                mallUserToken.setToken(token);
+                mallUserToken.setUpdateTime(now);
+                mallUserToken.setExpireTime(expireTime);
+                if (newBeeMallUserTokenMapper.updateByPrimaryKeySelective(mallUserToken) > 0) {
+                    return token;
+                }
+            }
+        }
+        return ServiceResultEnum.LOGIN_ERROR.getResult();
+    }
+
     /**
      * 获取token值
      *
