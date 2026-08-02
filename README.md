@@ -55,11 +55,21 @@ nacos
 minio
 rabbitmq
 
+## 异常报错处理：
+FileSizeLimitExceededException  (Tomcat 底层)
+↓ 包装
+IllegalStateException
+↓ 包装
+MaxUploadSizeExceededException  (Spring 层)
+↓ 捕获
+@ExceptionHandler(MaxUploadSizeExceededException.class)  ← 我们的修复
 
 
 
 
-初始化项目的时候，如果端口出现问题
+
+
+## 关闭多余的服务：初始化项目的时候，如果端口出现问题
 第一步：sudo netstat -vanp tcp -v | grep 28099
 或通过：sudo lsof -i :28099
 
