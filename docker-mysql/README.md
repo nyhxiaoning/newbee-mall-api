@@ -4,6 +4,19 @@
 
 Docker MySQL 本地开发环境。
 
+连接信息
+
+
+项目	值
+Host	localhost 或 127.0.0.1
+Port	33060
+root 密码	nyh123
+普通用户	newbee
+普通用户密码	newbee123
+数据库	newbee_mall_db_v2
+
+本地连接：直接使用roor，密码nyh123，端口：33060
+
 #### 目录结构
 
 ```
