@@ -41,6 +41,8 @@ java -jar target/newbee-mall-api-3.0.0-SNAPSHOT.jar --spring.profiles.active=dev
 分支：feature/webui-config
 分支：找到对应的配置内容进行整理即可
 
+## 部署方式：容器化
+容器化部署，使用 Docker 创建一个容器，将项目打包成 Docker 镜像，并运行容器。
 
 
 
